@@ -25,5 +25,9 @@ class ConfigRead:
         pwd = self.conf.get('userinfo','pwd')
         return uname,pwd
 
-
+    def address_email(self):
+        send_address = self.conf.get('email','send_address')
+        send_password = self.conf.get('email','send_password')
+        receive_address = self.conf.get('email','receive_address')
+        return send_address,send_password,receive_address
 

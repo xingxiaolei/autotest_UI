@@ -10,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from email.mime.application import MIMEApplication
 from public import HTMLTestReportCN
+from public.config_read import ConfigRead
 
 
 curpath = os.path.dirname(os.path.realpath(__file__))
@@ -20,13 +21,15 @@ currentDir = os.path.abspath(os.path.dirname(__file__))
 proDir = os.path.split(currentDir)[0]
 report_path = os.path.join(proDir, 'report')
 
+send_address, send_password, receive_address = ConfigRead().address_email()
+
 dis = unittest.defaultTestLoader.discover(case_path,pattern="test*.py")
 
 def send_mail(file_new,receivers,reportname,starttime,endtime,passge,fail,erro):
     mail_host = "smtp.ikang.com"  # 设置服务器
-    mail_user = "xiaolei.xing@ikang.com"  # 用户名
-    mail_pass = "Xxl51868,"  # 口令
-    sender = "xiaolei.xing@ikang.com"   #发送邮件的邮箱
+    mail_user = send_address  # 用户名
+    mail_pass = send_password  # 口令
+    sender = send_address   #发送邮件的邮箱
     if ',' in receivers:
         receivers = receivers.split(',')  # 字符串转化为列表，邮件接受者，取定时任务里的具体值
     else:
@@ -91,6 +94,6 @@ def create_report(all_case):
     return stopTime, startTime, Pass,fail,error,file_path
 if __name__ == '__main__':
     startTime, stopTime, Pass, fail, error, file_path = create_report(dis)
-    send_mail(file_new=file_path, receivers='xiaolei.xing@ikang.com', reportname="TJB", starttime=startTime,
+    send_mail(file_new=file_path, receivers=receive_address, reportname="TJB", starttime=startTime,
               endtime=stopTime,
               passge=Pass, fail=fail, erro=error)

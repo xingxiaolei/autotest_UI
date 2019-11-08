@@ -30,16 +30,13 @@ class Test_TJBWeb(unittest.TestCase):
 
     @data(*caselist)
     def test_web(self,case_detail):
-        print(case_detail)
         method = case_detail['locate_method']
         element = case_detail['locate_element']
         casedata = case_detail['locate_data']
         click = case_detail['locate_click']
         run_web = LocalMethod(self.driver,method,element,casedata,click)
         try:
-            print('开始')
             run_web.l_action()
-            print('结束')
         except Exception:
             log_build.log('定位元素失败：'+case_detail['case_name'][1])
             raise
